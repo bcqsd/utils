@@ -1,7 +1,9 @@
 import * as XLSX from 'xlsx/xlsx.mjs';
-
+import { processSheet } from './processSheet.js';
 /* load 'fs' for readFile and writeFile support */
 import * as fs from 'fs';
+
+
 XLSX.set_fs(fs);
 
 /* load 'stream' for stream support */
@@ -12,18 +14,18 @@ XLSX.stream.set_readable(Readable);
 import * as cpexcel from 'xlsx/dist/cpexcel.full.mjs';
 XLSX.set_cptable(cpexcel);
 
+//get config information from config.json
+let config=JSON.parse(fs.readFileSync('xls/config.json',{encoding:'utf8'}))
+
+
 //get data from .xlsx file
-const workbook=XLSX.readFile('./data.xlsx')
+const workbook=XLSX.readFile(config.dataUrl)
 
 //get sheet
 let worksheet=workbook.Sheets['Sheet1']
 
-
 //change cell value
-XLSX.utils.sheet_add_aoa(worksheet, [
-    [1],                             // <-- Write 1 to cell B3
-    ,                                // <-- Do nothing in row 4
-    [/*B5*/, /*C5*/, /*D5*/, "abc"]  // <-- Write "abc" to cell E5
-  ], { origin: "B3" });
 
-  XLSX.writeFileXLSX(workbook,'ret.xlsx')
+processSheet(worksheet)
+
+XLSX.writeFileXLSX(workbook,config.outputUrl)
