@@ -1,4 +1,7 @@
 {
+    "scripts": {
+        "leetcode":"node ./singleFIle/leetcode.js"
+    },
   "type": "module",
   "dependencies": {
     "xlsx": "^0.18.5"
