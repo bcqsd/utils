@@ -1,10 +1,19 @@
 {
     "scripts": {
-        "leetcode":"node ./singleFIle/leetcode.js",
+        "leetcode": "node ./singleFIle/leetcode.js",
         "xls": "node ./xls/index.js"
     },
-  "type": "module",
-  "dependencies": {
-    "xlsx": "^0.18.5"
-  }
+    "type": "module",
+    "dependencies": {
+        "xlsx": "^0.18.5"
+    },
+    "name": "jsUtil",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:bcqsd/utils.git",
+    "author": "bcqsd <20204248@cqu.edu.cn>",
+    "license": "MIT",
+    "devDependencies": {
+        "eslint": "^8.14.0"
+    }
 }

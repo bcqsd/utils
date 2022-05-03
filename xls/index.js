@@ -33,7 +33,7 @@ export function changeSheet(){
 }
 
 export function readSheet(){
-    const ret=new Array(10).fill(0).map(_=>new Array(2).fill(0))
+    const ret=new Array(10).fill(0).map(()=>new Array(2).fill(0))
     console.log(worksheet)
     for(let key in worksheet){
         if(parseInt(key.slice(1))<2) continue

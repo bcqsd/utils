@@ -3,9 +3,9 @@
  * @return {void} Do not return anything, modify board in-place instead.
  */
  var solveSudoku = function(board) {
-    const block=new Array(9).fill(0).map(_=>new Array(9).fill(false))  //记录block数字出现情况
-    const row=new Array(9).fill(0).map(_=>new Array(9).fill(false))  //记录row数字出现情况
-    const col=new Array(9).fill(0).map(_=>new Array(9).fill(false))  //记录col数字出现情况
+    const block=new Array(9).fill(0).map(()=>new Array(9).fill(false))  //记录block数字出现情况
+    const row=new Array(9).fill(0).map(()=>new Array(9).fill(false))  //记录row数字出现情况
+    const col=new Array(9).fill(0).map(()=>new Array(9).fill(false))  //记录col数字出现情况
     //已填入
     for(let i=0;i<9;++i){
         for(let j=0;j<9;++j){
