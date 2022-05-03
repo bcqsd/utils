@@ -26,6 +26,24 @@ let worksheet=workbook.Sheets['Sheet1']
 
 //change cell value
 
-processSheet(worksheet)
+export function changeSheet(){
+    processSheet(worksheet)
 
-XLSX.writeFileXLSX(workbook,config.outputUrl)
+    XLSX.writeFileXLSX(workbook,config.outputUrl)
+}
+
+export function readSheet(){
+    const ret=new Array(10).fill(0).map(_=>new Array(2).fill(0))
+    console.log(worksheet)
+    for(let key in worksheet){
+        if(parseInt(key.slice(1))<2) continue
+        if(key[0]=='B'){
+            ret[parseInt(key.slice(1)-2)][0]=worksheet[key].v
+        }else if(key[0]=='C'){
+            ret[parseInt(key.slice(1))-2][1]=worksheet[key].v
+        }
+    }
+    console.log(ret)
+}
+
+readSheet()

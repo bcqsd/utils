@@ -1,6 +1,7 @@
 {
     "scripts": {
-        "leetcode":"node ./singleFIle/leetcode.js"
+        "leetcode":"node ./singleFIle/leetcode.js",
+        "xls": "node ./xls/index.js"
     },
   "type": "module",
   "dependencies": {

@@ -1,4 +1,4 @@
 {
-    "dataUrl":"data.xlsx",
+    "dataUrl":"cities.csv",
     "outputUrl":"ret.xlsx"
 }
