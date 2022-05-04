@@ -5,11 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #canvas{
+            width: 80vw;
+        }
+    </style>
+    <script src="echarts.min.js"></script>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <script>
-       const arr=[
+    <div id="main" style="width: 600px;height:400px;"></div>
+   <script>
+/*eslint-disable*/
+const myChart=echarts.init(document.getElementById('main'))
+const rowData=[
     [ 1000, 145.08732275157155 ],
              [ 999, 128.35541250183314 ],
     [ 998, 124.46942720848129 ],
@@ -18,12 +26,19 @@
     [ 579, 109.98824625831303 ],
     [ 81, 109.988246258313 ]
   ]
-       
-        const canvas=document.getElementById('canvas')
-        const ctx=canvas.getContext('2d')
-        ctx.beginPath()
-         
-        ctx.closePath()
-    </script>
+myChart.setOption({
+    title:{
+        text:'adaption'
+    },
+    xAxis:{},
+    yAxis:{},
+    series:{
+        type:'line',
+        data:rowData
+    }
+})
+
+
+   </script>
 </body>
 </html>

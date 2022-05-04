@@ -1,10 +1,12 @@
 {
     "scripts": {
         "leetcode": "node ./singleFIle/leetcode.js",
-        "xls": "node ./xls/index.js"
+        "xls": "node ./xls/index.js",
+        "build": "rollup -c"
     },
     "type": "module",
     "dependencies": {
+        "echarts": "^5.3.2",
         "xlsx": "^0.18.5"
     },
     "name": "jsUtil",
@@ -14,8 +16,10 @@
     "author": "bcqsd <20204248@cqu.edu.cn>",
     "license": "MIT",
     "devDependencies": {
+        "@rollup/plugin-node-resolve": "^13.3.0",
         "eslint": "^8.14.0",
         "eslint-config-google": "^0.14.0",
-        "eslint-plugin-html": "^6.2.0"
+        "eslint-plugin-html": "^6.2.0",
+        "rollup": "^2.71.1"
     }
 }
