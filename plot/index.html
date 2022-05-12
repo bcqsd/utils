@@ -14,9 +14,11 @@
 </head>
 <body>
     <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="main2" style="width: 600px;height:400px;"></div>
    <script>
 /*eslint-disable*/
 const myChart=echarts.init(document.getElementById('main'))
+const myChart2=echarts.init(document.getElementById('main2'))
 const rowData=[
     [ 1000, 145.08732275157155 ],
              [ 999, 128.35541250183314 ],
@@ -37,8 +39,31 @@ myChart.setOption({
         data:rowData
     }
 })
-
-
+const cities=[
+    [ 116.46, 39.92 ],
+    [ 117.2, 39.13 ],
+    [ 121.48, 31.22 ],
+    [ 106.54, 29.59 ],
+    [ 91.11, 29.97 ],
+    [ 87.98, 43.77 ],
+    [ 106.27, 38.47 ],
+    [ 111.65, 40.82 ],
+    [ 108.33, 22.84 ],
+    [ 126.63, 45.75 ]
+  ]
+  let sor=[0,1,9,2,8,3,4,5,6,7,0]
+  sor=sor.map(p=>cities[p])
+  myChart2.setOption({
+    title:{
+        text:'route'
+    },
+    xAxis:{},
+    yAxis:{},
+    series:{
+        type:'line',
+        data:sor
+    }
+})
    </script>
 </body>
 </html>
