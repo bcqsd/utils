@@ -52,15 +52,27 @@ var Snake = /** @class */ (function () {
         switch (direction) {
             case 0:
                 this.head.x += 20;
+                if (this.head.x > canvas.width) {
+                    this.head.x = 0;
+                }
                 break;
             case 1:
                 this.head.y += 20;
+                if (this.head.y > canvas.height) {
+                    this.head.y = 0;
+                }
                 break;
             case 2:
                 this.head.x -= 20;
+                if (this.head.x < 0) {
+                    this.head.x = canvas.width;
+                }
                 break;
             case 3:
                 this.head.y -= 20;
+                if (this.head.y < 0) {
+                    this.head.y = canvas.height;
+                }
                 break;
         }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,21 +80,52 @@ var Snake = /** @class */ (function () {
     };
     return Snake;
 }());
+var Food = /** @class */ (function () {
+    function Food() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.width;
+        ctx.beginPath();
+        ctx.fillStyle = "green";
+        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.strokeRect(this.x, this.y, 20, 20);
+    }
+    Food.prototype.reset = function () {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.width;
+        ctx.beginPath();
+        ctx.fillStyle = "green";
+        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.strokeRect(this.x, this.y, 20, 20);
+    };
+    return Food;
+}());
 var snake = new Snake(3);
+var food = new Food();
+var dir = 0;
+var anima = setInterval(function () {
+    snake.move(dir);
+}, 50);
 canvas.addEventListener('keydown', function (ev) {
     ev.preventDefault();
     switch (ev.key) {
         case "ArrowUp":
-            snake.move(3);
+            dir = 3;
             break;
         case "ArrowRight":
-            snake.move(0);
+            dir = 0;
             break;
         case "ArrowDown":
-            snake.move(1);
+            dir = 1;
             break;
         case "ArrowLeft":
-            snake.move(2);
+            dir = 2;
             break;
+        case "Escape":
+            clearInterval(anima);
+            break;
+        case "Enter":
+            anima = setInterval(function () {
+                snake.move(dir);
+            }, 50);
     }
 });
