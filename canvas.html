@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #canvas{
+            background-color: rgb(206, 174, 174,0.3);
+        }
+    </style>
+</head>
+<body>
+   <div id="border">
+    <canvas id="canvas"></canvas>
+   </div>
+    <script>
+        let drawable=true
+        const canvas = document.getElementById('canvas');
+        canvas.width = document.documentElement.clientWidth; // 设置宽度
+        canvas.height =document.documentElement.clientHeight; // 设置高度
+        const arr=new Array(2).fill(0)
+
+    canvas.addEventListener('mousedown',(e)=>{
+            console.log(e.layerX,e.layerY)
+              arr[0]=[e.layerX,e.layerY]       
+        })
+  
+    canvas.addEventListener('mousemove',e=>{
+        if(arr[0]!=0)  console.log(e.layerX,e.layerY)
+       arr[1]=[e.layerX,e.layerY]
+       //画图
+       draw()
+    })
+    canvas.addEventListener('mouseup',e=>{
+        drawable=false
+    })
+
+       function draw(){
+        if(!drawable) return;
+         //清除之前画的线
+         canvas.height=canvas.height+0
+        var context = canvas.getContext("2d");//得到绘图的上下文环境
+        context.beginPath();//开始绘制线条，若不使用beginPath，则不能绘制多条线条
+       if(arr[0]==0) return
+        context.moveTo(...arr[0]);//线条开始位置
+        context.lineTo(...arr[1]);
+        context.closePath();//结束绘制线条，不是必须的
+        context.lineWidth = 5;//设置线条宽度
+        context.strokeStyle = "red";//设置线条颜色
+        context.stroke();//用于绘制线条
+       }
+      
+    </script>
+</body>
+</html>
