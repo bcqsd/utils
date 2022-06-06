@@ -32,6 +32,7 @@ var Rect = /** @class */ (function () {
 var Snake = /** @class */ (function () {
     function Snake(len) {
         if (len === void 0) { len = 0; }
+        this.growing = false;
         this.length = len;
         this.head = new Rect();
         this.body = new Array(this.length);
@@ -45,10 +46,17 @@ var Snake = /** @class */ (function () {
         this.body.forEach(function (p) { return p.draw(color); });
         this.head.draw("yellow");
     };
+    Snake.prototype.grow = function () {
+        this.growing = true;
+    };
     Snake.prototype.move = function (direction) {
         if (direction === void 0) { direction = 0; }
         this.body.unshift(new Rect(this.head));
-        this.body.pop();
+        //判断是否延长
+        if (!this.growing)
+            this.body.pop();
+        else
+            this.growing = false;
         switch (direction) {
             case 0:
                 this.head.x += 20;
@@ -84,14 +92,14 @@ var Food = /** @class */ (function () {
     function Food() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.width;
-        ctx.beginPath();
-        ctx.fillStyle = "green";
-        ctx.fillRect(this.x, this.y, 20, 20);
-        ctx.strokeRect(this.x, this.y, 20, 20);
+        this.draw();
     }
     Food.prototype.reset = function () {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.width;
+        this.draw();
+    };
+    Food.prototype.draw = function () {
         ctx.beginPath();
         ctx.fillStyle = "green";
         ctx.fillRect(this.x, this.y, 20, 20);
@@ -99,12 +107,33 @@ var Food = /** @class */ (function () {
     };
     return Food;
 }());
-var snake = new Snake(3);
 var food = new Food();
+//监听snake对象，当与food相遇时reset food
+var handler = {
+    set: function (target, key, value, receiver) {
+        var res = Reflect.set(target, key, value, receiver);
+        console.log('moved');
+        var snakeX = target.x;
+        var snakeY = target.y;
+        if (Math.abs(snakeX - food.x) < 10 && Math.abs(snakeY - food.y) < 10) {
+            ate();
+        }
+        return res;
+    }
+};
+var snake = new Snake(3);
+snake.head = new Proxy(snake.head, handler);
 var dir = 0;
 var anima = setInterval(function () {
     snake.move(dir);
+    food.draw(); //food要刷新显示
 }, 50);
+//成功吃到食物
+function ate() {
+    console.log("success to eat food");
+    food.reset();
+    snake.growing = true;
+}
 canvas.addEventListener('keydown', function (ev) {
     ev.preventDefault();
     switch (ev.key) {
@@ -124,6 +153,7 @@ canvas.addEventListener('keydown', function (ev) {
             clearInterval(anima);
             break;
         case "Enter":
+            clearInterval(anima);
             anima = setInterval(function () {
                 snake.move(dir);
             }, 50);

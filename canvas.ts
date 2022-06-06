@@ -33,11 +33,13 @@ class Snake {
     length:number
     body:Rect[]
     head:Rect
+    growing:boolean
     draw(color="red") {
         this.body.forEach(function (p) { return p.draw(color); });
         this.head.draw("yellow");
     }
     constructor(len=0) {
+        this.growing=false
         this.length = len;
         this.head = new Rect();
         this.body = new Array(this.length);
@@ -46,9 +48,14 @@ class Snake {
         }
         this.draw();
     }
+    grow(){
+        this.growing=true
+    }
     move(direction:number=0){
         this.body.unshift(new Rect(this.head))
-        this.body.pop()
+        //判断是否延长
+        if(!this.growing) this.body.pop()
+        else this.growing=false
         switch(direction){
             case 0:
                 this.head.x+=20
@@ -87,28 +94,48 @@ class Food{
     constructor(){
         this.x=Math.random()*(canvas as HTMLCanvasElement).width
         this.y=Math.random()*(canvas as HTMLCanvasElement).width
-        ctx.beginPath()
-        ctx.fillStyle="green"
-        ctx.fillRect(this.x,this.y,20,20)
-        ctx.strokeRect(this.x, this.y,20,20)
+        this.draw()
     }
     reset(){
         this.x=Math.random()*(canvas as HTMLCanvasElement).width
         this.y=Math.random()*(canvas as HTMLCanvasElement).width
+       this.draw()
+    }
+    draw(){
         ctx.beginPath()
         ctx.fillStyle="green"
         ctx.fillRect(this.x,this.y,20,20)
         ctx.strokeRect(this.x, this.y,20,20)
     }
 }
-
-
-let snake=new Snake(3)
 let food=new Food()
+//监听snake对象，当与food相遇时reset food
+let handler={
+    set(target,key,value,receiver){
+        const res=Reflect.set(target,key,value,receiver)
+            console.log('moved')
+            let snakeX= target.x
+            let snakeY=target.y 
+            if(Math.abs(snakeX-food.x)<10&&Math.abs(snakeY-food.y)<10){
+           ate()
+        }
+        return res
+    }
+}
+let snake=new Snake(3)
+snake.head=new Proxy(snake.head,handler)
 let dir=0
 let anima=setInterval(()=>{
     snake.move(dir)
+    food.draw() //food要刷新显示
 },50)
+
+//成功吃到食物
+function ate(){
+    console.log("success to eat food");
+    food.reset()
+    snake.growing=true
+}
 canvas.addEventListener('keydown',(ev)=>{
     ev.preventDefault()
     switch (ev.key) {
@@ -128,6 +155,7 @@ canvas.addEventListener('keydown',(ev)=>{
             clearInterval(anima)
             break
         case "Enter":
+            clearInterval(anima)
             anima=setInterval(()=>{
                 snake.move(dir)
             },50)    
