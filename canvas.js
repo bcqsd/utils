@@ -1,15 +1,20 @@
 "use strict";
-//exports.__esModule = true;
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.width = document.documentElement.clientWidth; // 设置宽度
 canvas.height = document.documentElement.clientHeight; // 设置高度
 var Rect = /** @class */ (function () {
-    function Rect(x, y, width, height) {
+    function Rect(rect, x, y, width, height) {
         if (x === void 0) { x = 20; }
         if (y === void 0) { y = 20; }
         if (width === void 0) { width = 20; }
         if (height === void 0) { height = 20; }
+        if (rect) {
+            x = rect.x;
+            y = rect.y;
+            width = rect.width;
+            height = rect.height;
+        }
         this.x = x;
         this.y = y;
         this.width = width;
@@ -31,15 +36,53 @@ var Snake = /** @class */ (function () {
         this.head = new Rect();
         this.body = new Array(this.length);
         for (var i = 0; i < len; ++i) {
-            this.body.push(new Rect(20 * (i + 2), 20));
+            this.body.push(new Rect(null, 20 * (i + 2), 20));
         }
         this.draw();
     }
     Snake.prototype.draw = function (color) {
         if (color === void 0) { color = "red"; }
-        this.head.draw("yellow");
         this.body.forEach(function (p) { return p.draw(color); });
+        this.head.draw("yellow");
+    };
+    Snake.prototype.move = function (direction) {
+        if (direction === void 0) { direction = 0; }
+        this.body.unshift(new Rect(this.head));
+        this.body.pop();
+        switch (direction) {
+            case 0:
+                this.head.x += 20;
+                break;
+            case 1:
+                this.head.y += 20;
+                break;
+            case 2:
+                this.head.x -= 20;
+                break;
+            case 3:
+                this.head.y -= 20;
+                break;
+        }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.draw();
     };
     return Snake;
 }());
 var snake = new Snake(3);
+canvas.addEventListener('keydown', function (ev) {
+    ev.preventDefault();
+    switch (ev.key) {
+        case "ArrowUp":
+            snake.move(3);
+            break;
+        case "ArrowRight":
+            snake.move(0);
+            break;
+        case "ArrowDown":
+            snake.move(1);
+            break;
+        case "ArrowLeft":
+            snake.move(2);
+            break;
+    }
+});
